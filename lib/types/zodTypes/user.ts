@@ -6,3 +6,5 @@ export const userSession = zod.object({
 		.string()
 		.min(5, { message: "Password must be atleast 5 characters" }),
 });
+
+export type UserSession = zod.infer<typeof userSession>;
