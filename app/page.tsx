@@ -1,3 +1,9 @@
+import AddTodoComp from "@/components/AddTodoComp";
+
 export default function Home() {
-	return <div>hi</div>;
+	return (
+		<div>
+			<AddTodoComp />
+		</div>
+	);
 }
