@@ -1,11 +1,12 @@
 import { ChangeEvent } from "react";
 
 interface Props {
-	label: string;
+	label?: string;
 	placeholder?: string;
 	type: string;
 	onchange: (e: ChangeEvent<HTMLInputElement>) => void;
 	min?: number;
+	checked?: boolean;
 }
 
 export default function InputBox({
@@ -14,6 +15,7 @@ export default function InputBox({
 	type,
 	onchange,
 	min,
+	checked,
 }: Props) {
 	return (
 		<>
@@ -24,6 +26,7 @@ export default function InputBox({
 				type={type}
 				onChange={onchange}
 				min={min === 5 ? 5 : undefined}
+				defaultChecked={checked}
 			/>
 		</>
 	);
