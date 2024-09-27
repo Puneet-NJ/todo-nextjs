@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { userSession } from "@/lib/types/zodTypes/user";
 import prisma from "@/lib/db";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -29,19 +30,24 @@ export const authOptions: NextAuthOptions = {
 					return null;
 				}
 
-				// Compare hashed password
 				const existingUser = await prisma.user.findFirst({
 					where: {
 						email: restCredentials.email,
-						password: restCredentials.password,
 					},
 				});
 				if (existingUser) {
-					return {
-						email: existingUser.email,
-						name: existingUser.name,
-						id: String(existingUser.id),
-					};
+					const compareHash = await bcrypt.compare(
+						restCredentials.password as string,
+						existingUser.password
+					);
+
+					if (compareHash) {
+						return {
+							email: existingUser.email,
+							name: existingUser.name,
+							id: String(existingUser.id),
+						};
+					}
 				}
 
 				return null;
